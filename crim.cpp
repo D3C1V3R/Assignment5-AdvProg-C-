@@ -76,7 +76,7 @@ bool Murderer::CheckRelease() { // Murderers become eligible for parole when the
 		return false;
 }
 void Criminal::Sentence() {
-	cout << "Do you want to parole " << FirstName << FamilyName << "(y/n)?" << endl;
+	cout << "Do you want to parole " << FirstName <<" "<< FamilyName << "(y/n)?" << endl;
 }
 void Criminal::Sentence(bool value) {
 	if (value == true)

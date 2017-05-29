@@ -123,12 +123,12 @@ void Prison::CheckParole(){
 	for (Criminal *inmate : Crims) {
 		if (inmate->CheckRelease() == true) {
 			inmate->Sentence();
+
 			string input;
 			cin >> input;
+
 			if (input == "y") {
 				inmate->Sentence(true);
-				//Criminal *tmp = inmate;
-				//delete (inmate);
 				Release(inmate);
 			}
 			else
@@ -139,14 +139,8 @@ void Prison::CheckParole(){
 }
 void Prison::Release(Criminal* b) {
 	set<Criminal*, Comp>::iterator it = Crims.begin();
-	for (; it != Crims.end(); ) {
-		Criminal *n = *it;
-		if (*n == *b) {
-			it = Crims.erase(it);
-		}
-		else {
-			++it;
-		}
+	if (std::find(Crims.begin(), Crims.end(), b) != Crims.end()) {
+		Crims.erase(it);
 	}
 }
 
