@@ -95,6 +95,10 @@ void Prison::DisplayPrisioners() {
 
 //ReduceSentence( ) should reduce the remaining months of all the inmates by 6 months
 void Prison::ReduceSentence() {
+	if (Crims.size() == 0) {
+		cout << "Please load the database first." << endl;
+		return;
+	}
 	cout << "Reducing sentence of all prisoners by 6 months." << endl;
 	for (Criminal *a : Crims) {
 		a->ReduceSentence();
@@ -102,40 +106,49 @@ void Prison::ReduceSentence() {
 	cout << "Do you want to check for prisoners awaiting release? (y/n)"<< endl;
 	string input;
 	cin >> input;
-	cin.ignore();
 
 	if (input == "y") {
 		CheckParole();
 	}
-	else
+	else {
+		cin.ignore();
 		return;
+	}
 }
 
-void Prison::CheckParole(){
+void Prison::CheckParole() {
 	if (Crims.size() == 0) {
-		cout << "Plase load the database first." << endl;
+		cout << "Please load the database first." << endl;
 		return;
 	}
 	for (Criminal *inmate : Crims) {
 		if (inmate->CheckRelease()) inmate->Print();
-
 	}
+	CrimSet tmp; // Tmp list to delete later
 	for (Criminal *inmate : Crims) {
 		if (inmate->CheckRelease() == true) {
 			inmate->Sentence();
-
 			string input;
 			cin >> input;
-
 			if (input == "y") {
 				inmate->Sentence(true);
-				Release(inmate);
+				tmp.insert(inmate);
 			}
-			else
+			else {
 				inmate->Sentence(false);
+			}
 		}
 	}
+	for (set<Criminal*, Comp>::iterator iter = Crims.begin(); iter != Crims.end();){
+		if (std::find(tmp.begin(), tmp.end(), *iter) != tmp.end()){
+			Crims.erase(iter++);
+		}else
+			++iter;
+	}
+	if (tmp.size() == 0)
+		cout << "Nobody is eligible for parole." << endl;
 	SaveData();
+	cin.ignore();
 }
 void Prison::Release(Criminal* b) {
 	set<Criminal*, Comp>::iterator it = Crims.begin();
@@ -151,4 +164,6 @@ void Prison::SaveData() {
 		File << inmate->getData();
 	}
 	File.close();
+
+	cout << "There are " << Crims.size() << " Criminals in the database." << endl;
 }

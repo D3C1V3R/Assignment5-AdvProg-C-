@@ -35,7 +35,8 @@ class Robber : public Criminal {
 		string getData();
 		bool CheckRelease();
 	private:  
-			int AmountStolen; };
+		int AmountStolen; 
+};
 
 class Murderer : public Criminal { 
 	public:
@@ -44,9 +45,8 @@ class Murderer : public Criminal {
 		string getData();
 		bool CheckRelease();
 	private:  
-			string VictimsFirstName, VictimsFamilyName; };
-
-
+		string VictimsFirstName, VictimsFamilyName; 
+};
 
 #endif
 

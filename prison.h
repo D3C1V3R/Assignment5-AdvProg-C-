@@ -28,8 +28,4 @@ class Prison {
 	  set<Criminal*, Comp> Crims; // set of pointers to class Criminal
 	void ProcessString(string line);
 };
-
-
 #endif
-
-

@@ -4,14 +4,11 @@
 #include "crim.h"
 using namespace std;
 
-// ========== Base class Criminal Function definitions ==========
-
-// Default constructor: inits Months to zero and CellNo to -1
 
 Criminal::~Criminal() {
-	//delete this;
 	CellNo = -1;
 	Months = 0;
+	delete this;
 }
 
 //Constructor
@@ -25,16 +22,10 @@ Criminal::Criminal(string *FName, string *LName, string *nCrime,int Mths,int Cel
 
 // Operator< returns true if *this name is less than Other name
 bool Criminal::operator<(const Criminal &Other) {
-	if (this->FamilyName < Other.FamilyName)
-		return true;
-	else
-		return false;
+	return (FamilyName < Other.FamilyName);
 }
 bool Criminal::operator==(const Criminal &Other) {
-	if (this->CellNo == Other.CellNo)
-		return true;
-	else
-		return false;
+	return (CellNo == Other.CellNo);
 }
 // Prints criminal details on screen
 void Criminal::Print(){
@@ -59,18 +50,6 @@ void Criminal::IncreaseSentence() {
 }
 bool Criminal::CheckRelease() { // all others become eligible for parole when the months remaining is 12 months or less
 	if (Months <= 12	)
-			return true;
-	else
-		return false;
-}
-bool Robber::CheckRelease() { //  Robbers become eligible for parole when their months remaining is 9 months or less
-	if (Months <= 9)
-		return true;
-	else
-		return false;
-}
-bool Murderer::CheckRelease() { // Murderers become eligible for parole when their months remaining is 6 months or less
-	if (Months <= 6)
 		return true;
 	else
 		return false;
@@ -91,20 +70,17 @@ string Criminal::getData() {
 	string a = FirstName + " " + FamilyName + " " + Crime + " "+ to_string(Months) +"\n";
 	return a;
 }
-string Robber::getData() {
-	string a = FirstName + " " + FamilyName + " " + Crime + " " + to_string(Months) + to_string(AmountStolen) + "\n";
-	return a;
-}
-string Murderer::getData() {
-	string a = FirstName + " " + FamilyName + " " + Crime + " " + to_string(Months) + "  " + VictimsFirstName + " " + VictimsFamilyName + "\n";
-	return a;
-}
+
+/*---------Robber Functions---------*/
 
 Robber::Robber(string *FName, string *LName, string *Crm, int Mths, int Amnt, int Cell) 
 	: Criminal(FName, LName, Crm, Mths, Cell) { 
 	AmountStolen = Amnt; 
 }
- 
+string Robber::getData() {
+	string a = FirstName + " " + FamilyName + " " + Crime + " " + to_string(Months) + to_string(AmountStolen) + "\n";
+	return a;
+}
 void Robber::Print() {
 	cout << left << setw(10) << FamilyName
 		<< setw(10) << FirstName
@@ -112,8 +88,14 @@ void Robber::Print() {
 		<< " Cell- " << setw(10) << CellNo
 		<< "[Serving " << Months << " months for stealing $" << AmountStolen << " ]" << endl;
 }
+bool Robber::CheckRelease() { //  Robbers become eligible for parole when their months remaining is 9 months or less
+	if (Months <= 9)
+		return true;
+	else
+		return false;
+}
 
-
+/*---------Murderer Functions---------*/
 Murderer::Murderer(string *FName, string *LName, string *Crm, int Mths, int Cell, string vname, string vlname)
 	: Criminal(FName, LName, Crm, Mths, Cell) { 
 	VictimsFirstName = vname;
@@ -126,4 +108,14 @@ void Murderer::Print() {
 		<< " Crime- " << setw(10) << Crime
 		<< " Cell- " << setw(10) << CellNo
 		<< "[Serving " << Months << "months for murdering " << VictimsFirstName <<" "<< VictimsFamilyName << " ]" << endl;
+}
+bool Murderer::CheckRelease() { // Murderers become eligible for parole when their months remaining is 6 months or less
+	if (Months <= 6)
+		return true;
+	else
+		return false;
+}
+string Murderer::getData() {
+	string a = FirstName + " " + FamilyName + " " + Crime + " " + to_string(Months) + "  " + VictimsFirstName + " " + VictimsFamilyName + "\n";
+	return a;
 }
