@@ -59,10 +59,12 @@ void Prison::ReadCrimFile(){
 		cout << "Can't find data file!\n";
 		return;
 	}
-	while(!File.eof()) {
+	while (!File.eof()) {
 		getline(File, line);
-		if (line.length() > 0);
+		if (line.size() > 0) {
 			ProcessString(line);
+		}
+		
 	}
 	File.close();
 
@@ -140,9 +142,7 @@ void Prison::Release(Criminal* b) {
 	for (; it != Crims.end(); ) {
 		Criminal *n = *it;
 		if (*n == *b) {
-			delete (*it);
-			//it = Crims.erase(it);
-			return;
+			it = Crims.erase(it);
 		}
 		else {
 			++it;
@@ -153,8 +153,8 @@ void Prison::Release(Criminal* b) {
 void Prison::SaveData() {
 	ofstream  File;
 	File.open("Crims.txt");
-	for (Criminal *a : Crims) {
-		File << a->getData();
+	for (Criminal *inmate : Crims) {
+		File << inmate->getData();
 	}
 	File.close();
 }
